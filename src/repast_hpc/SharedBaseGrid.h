@@ -187,6 +187,7 @@ protected:
 
 public:
   void balance();
+  void balance(std::map<AgentId, int> & map_agt_proc);
 
 	// overriding moveTo that takes newLocation hides the moveTo in the
 	// Grid base class that takes a Point. This using directive
@@ -356,6 +357,29 @@ void SharedBaseGrid<T, GPTransformer, Adder, GPType>::balance() {
   }
 }
 
+template<typename T, typename GPTransformer, typename Adder, typename GPType>
+void SharedBaseGrid<T, GPTransformer, Adder, GPType>::balance(std::map<AgentId, int> & map_agt_proc) {
+
+  /*  
+  int r = comm->rank();
+  auto itEnd = GridBaseType::locationsEnd();
+  for (auto it = GridBaseType::locationsBegin(); it != itEnd; ++it) {
+    AgentId id = it->second->ptr->getId();
+    if(id.currentRank() == r){
+      Point<GPType> loc = it->second->point;
+      if(!localBounds.contains(loc)){
+	RepastProcess::instance()->moveAgent(id, map_agt_proc.at(id) );
+      }
+    }
+  }
+  */
+
+  for (auto& it : map_agt_proc) {
+    RepastProcess::instance()->moveAgent(it.first, it.second );
+  }
+  
+}
+ 
 template<typename T, typename GPTransformer, typename Adder, typename GPType>
 bool SharedBaseGrid<T, GPTransformer, Adder, GPType>::moveTo(const AgentId& id, const Point<GPType>& newLocation) {
 	return SharedBaseGrid<T, GPTransformer, Adder, GPType>::moveTo(id, newLocation.coords());

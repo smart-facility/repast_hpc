@@ -73,9 +73,10 @@ bool GridDimensions::contains(const std::vector<int>& pt) const {
 	for (size_t i = 0; i < pt.size(); i++) {
 		double start = _origin.getCoordinate(i);
 		double end = start + _extents.getCoordinate(i);
-		int pVal = pt[i];
-		if (pVal < start || pVal >= end)
+		int pVal = pt[i];		
+		if (pVal < start || pVal >= end) {
 			return false;
+		}
 	}
 	return true;
 }
